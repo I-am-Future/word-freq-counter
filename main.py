@@ -11,7 +11,7 @@ import wordcloud
 st.title('Word Frequency Analysis by Future')
 
 # Input box
-user_input = st.text_area('Input your text here. We won\' save your text:', value='', height=200)
+user_input = st.text_area('Input your text here. We won\'t save your text:', value='', height=200)
 user_input = user_input.lower()
 
 # Button
