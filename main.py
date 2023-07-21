@@ -4,8 +4,13 @@
 
 import streamlit as st
 import pandas as pd
+import plotly.graph_objects as go
 
 import wordcloud
+
+def create_link(url:str) -> str:
+    return f'''<a href="{url}">🔗</a>'''
+
 
 # Title
 st.title('Word Frequency Analysis by Future')
@@ -49,5 +54,32 @@ if st.button('Analyze'):
     st.image(wc.to_array())
 
     # show table with st.DataFrame, set height for the total number of elements
-    st.dataframe(word_freq, use_container_width=True, height=1000)
+    # st.dataframe(word_freq, use_container_width=True, height=1000)
 
+    # add a new column, the link to https://www.thesaurus.com/browse/{}
+    word_freq['Synonum'] = [create_link(f'https://www.thesaurus.com/browse/{word}') for word in word_freq.index.to_list()]
+    
+    # make the word column as the first column
+    word_freq.insert(0, 'Word', word_freq.index)
+
+    print(word_freq)
+    fig = go.Figure(
+        data=[
+            go.Table(                
+                columnwidth = [1,1,0.5],
+                header=dict(
+                    values=[f"<b>{i}</b>" for i in word_freq.columns.to_list()],
+                    fill_color='orange'
+                    ),
+                cells=dict(
+                    values=word_freq.transpose(),
+                    font=dict(size=20),
+                    ),
+                ),
+            ]
+        )
+    fig.update_layout(height=1000)
+
+    st.text('The table below shows the frequency of each word and the link to its synonum:')
+
+    st.plotly_chart(fig, use_container_width=True)
