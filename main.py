@@ -11,6 +11,8 @@ import wordcloud
 def create_link(url:str) -> str:
     return f'''<a href="{url}">🔗</a>'''
 
+# Add network title and favicon
+st.set_page_config(page_title='Word Freq Counter', page_icon='📚')
 
 # Title
 st.title('Word Frequency Analysis by Future')
